@@ -1,73 +1,36 @@
-// import React, { Component } from 'react';
-
-// // state data for 3 counters
-// const data = [
-//   { id: 1, value: 0 },
-//   { id: 2, value: 0 },
-//   { id: 3, value: 0 },
-// ];
-
-// // Counter Component
-// class Counter extends Component {
-//   render() {
-//     const { value } = this.props;
-//     return (
-//       <div className="counter">
-//         <b>{value}</b>
-//         <div className="counter-controls">
-//           <button className="button is-danger is-small">-</button>
-//           <button className="button is-success is-small">+</button>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
-// class App extends Component {
-//   constructor(props, context) {
-//     super(props, context);
-//   }
-
-//   render() {
-//     return (
-//       <div>
-//         {data.map((counter) => (
-//           <Counter key={counter.id} value={counter.value} />
-//         ))}
-//       </div>
-//     );
-//   }
-// }
-
-// export default App;
-
 import React, { Component } from 'react';
+var sum = 0;
+const step = 1;
 
 // Counter Component
 class Counter extends Component {
-  onIncrement = () => {
-    this.setState((state) => ({ value: state.value + 1 }));
-  };
+  // constructor(props, context) {
+  //   super(props, context);
 
-  onDecrement = () => {
-    this.setState((state) => ({ value: state.value - 1 }));
-  };
+  // this.state = {
+  //   value: props.value,
+  //   summ: props.summ,
+  //   onIncrement: props.onIncrement,
+  //   onDecrement: props.onDecrement,
+  // };
 
   render() {
-    const value = this.props;
+    const { value, onDecrement, onIncrement } = this.props;
+    // const { value } = this.props;
+
     return (
       <div className="counter">
         <b>{value}</b>
         <div className="counter-controls">
           <button
             className="button is-danger is-small"
-            onClick={this.onDecrement}
+            onClick={onDecrement}
             type="button">
             -
           </button>
           <button
             className="button is-success is-small"
-            onClick={this.onIncrement}
+            onClick={onIncrement}
             type="button">
             +
           </button>
@@ -77,24 +40,9 @@ class Counter extends Component {
   }
 }
 
-// class Total extends Component {
-//   onIncrement = () => {
-//     this.setState((state) => ({ value: state.value + 1 }));
-//   };
-
-//   onDecrement = () => {
-//     this.setState((state) => ({ value: state.value - 1 }));
-//   };
-
-//   render() {
-//     const { value } = this.props;
-//     return (
-//       <div className="counter">
-
-//       </div>
-//     );
-//   }
-// }
+function Total(props) {
+  return <div>{props.sum}</div>;
+}
 
 class App extends Component {
   constructor(props, context) {
@@ -103,25 +51,49 @@ class App extends Component {
     // state data for 3 counters
     this.state = {
       data: [
-        { id: 1, value: 1 },
-        { id: 2, value: 2 },
-        { id: 3, value: 3 },
+        { id: 1, value: 0 },
+        { id: 2, value: 0 },
+        { id: 3, value: 0 },
       ],
+      // summ: 0,
+      // step: 2,
     };
   }
 
+  onIncrement = (step) => {
+    sum = sum + step;
+
+    this.setState((state) => ({
+      id: this.state.data.id,
+      value: this.state.data.value + step,
+    }));
+
+    return this.state.value;
+  };
+
+  onDecrement = (step) => {
+    sum = sum - step;
+
+    this.setState((state) => ({ value: state.value - step }));
+    return this.state.value;
+  };
+
   render() {
+    console.log(this.state.value);
+
     return (
       <div>
         {this.state.data.map((counter) => (
-          <Counter key={this.state.data.id} value={this.state.data.value} />
+          <Counter
+            key={counter.id}
+            value={counter.value}
+            onIncrement={() => this.onIncrement(step)}
+            onDecrement={() => this.onDecrement(step)}
+          />
         ))}
+
+        <Total sum={sum} />
       </div>
-      //   <div>
-      //   {this.state.data.map((counter) => (
-      //     <Total total={total.total} />
-      //   ))}
-      //   </div>
     );
   }
 }
